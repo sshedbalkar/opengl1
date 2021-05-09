@@ -73,7 +73,8 @@
                 "isDefault": true
             },
             "presentation": {
-                "reveal": "never",
+                "echo": true,
+                "reveal": "always",
                 "panel": "shared",
                 "showReuseMessage": false,
             },

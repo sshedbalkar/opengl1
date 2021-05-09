@@ -2,6 +2,9 @@
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 
+pkg_search_module(GLEW REQUIRED glew)
+# find_package(GLEW REQUIRED)
+
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
 
@@ -18,10 +21,14 @@ if(WIN32)
     set(SOURCE_FILES ${SOURCE_FILES} sample.rc)
 endif(WIN32)
 
+
 # the above paths and defines will be used in this build
-add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SOURCE_FILES})
+add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SOURCE_FILES}) 
 # set(RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/$<CONFIG>)
 
+target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
+    $<$<CXX_COMPILER_ID:AppleClang,Clang>:GLEW_STATIC>
+)
 set_target_properties(${CMAKE_PROJECT_NAME}
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin/$<CONFIG>/lib"
@@ -30,13 +37,13 @@ set_target_properties(${CMAKE_PROJECT_NAME}
 )
 
 # starget_compile_options(${CMAKE_PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:AppleClang,Clang>:-framework OpenGL> )
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES}) 
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES}) 
 
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${GLFW_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # Add to forty to the wxWidgets libraries. These are
 # set for  by the find script. Other needed libraries can be added here
 
-target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE ${GLFW_LIBRARY_DIRS})
+target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE ${GLFW_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS})
 
 # copy the executable to the bin directory
 # add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
