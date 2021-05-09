@@ -79,6 +79,26 @@
                 "showReuseMessage": false,
             },
             "problemMatcher": []
+        },
+        {
+            "label": "git_push",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "command": "${workspaceRoot}/scripts/mac_git_push.sh",
+            "args": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false,
+            },
+            "problemMatcher": []
         }
     ]
 }
